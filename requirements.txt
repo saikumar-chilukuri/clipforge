@@ -1,0 +1,5 @@
+fastapi>=0.115
+uvicorn[standard]>=0.32
+yt-dlp>=2025.1.15
+groq>=0.15
+python-multipart>=0.0.20

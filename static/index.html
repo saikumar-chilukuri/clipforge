@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClipForge — Turn videos into clips</title>
+  <link rel="stylesheet" href="/styles.css?v=4" />
+</head>
+<body>
+  <header class="nav">
+    <div class="logo">⚡ Clip<span>Forge</span></div>
+    <div class="nav-right">
+      <span class="badge" id="keyBadge" hidden>Free AI ready</span>
+      <button class="btn ghost" id="settingsBtn">⚙ Settings</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <p class="eyebrow">Free AI · YouTube → viral shorts</p>
+      <h1>Turn videos into <span class="grad">clips that pop.</span></h1>
+      <p class="sub">Paste a YouTube link. Get unique vertical clips with captions, hooks and post copy — ready for TikTok, Reels &amp; Shorts.</p>
+
+      <form class="urlbar" id="jobForm">
+        <input type="url" id="urlInput" placeholder="https://www.youtube.com/watch?v=..." required autocomplete="off" />
+        <button type="submit" class="btn primary" id="goBtn">Get clips</button>
+      </form>
+
+      <div class="options" id="options">
+        <label>Clips
+          <select id="numClips">
+            <option>5</option><option selected>8</option><option>10</option><option>12</option>
+          </select>
+        </label>
+        <label>Clip length
+          <select id="lenRange">
+            <option value="30,45">30–45s</option>
+            <option value="30,60" selected>30–60s</option>
+            <option value="45,60">45–60s</option>
+            <option value="30,90">30–90s</option>
+          </select>
+        </label>
+        <label>Layout
+          <select id="layout">
+            <option value="vertical_blur" selected>Full frame (no cut-off)</option>
+            <option value="vertical">Close-up (crops sides)</option>
+            <option value="square">Square 1:1</option>
+            <option value="original">Original aspect</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="notice error" id="formError" hidden></div>
+
+      <div class="steps">
+        <div class="step"><span>1</span><h3>Paste a link</h3><p>Drop any YouTube video, podcast or stream.</p></div>
+        <div class="step"><span>2</span><h3>AI finds moments</h3><p>Free models transcribe and pick the most viral segments.</p></div>
+        <div class="step"><span>3</span><h3>Download &amp; post</h3><p>Vertical 9:16 clips with burned captions, ready to upload.</p></div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="panel" id="progressPanel" hidden>
+      <div class="progress-head">
+        <h2 id="progTitle">Working…</h2>
+        <span class="pct" id="progPct">0%</span>
+      </div>
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <p class="prog-msg" id="progMsg">Starting</p>
+      <ol class="stages" id="stageList">
+        <li data-stage="downloading">Download video</li>
+        <li data-stage="transcribing">Transcribe (Whisper)</li>
+        <li data-stage="analyzing">Find highlights (LLM)</li>
+        <li data-stage="rendering">Render clips</li>
+      </ol>
+      <div class="notice error" id="jobError" hidden></div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="panel" id="resultsPanel" hidden>
+      <div class="results-head">
+        <div>
+          <h2 id="resTitle">Your clips</h2>
+          <p class="muted" id="resMeta"></p>
+        </div>
+        <button class="btn ghost" id="newJobBtn">＋ New video</button>
+      </div>
+      <div class="clips" id="clipGrid"></div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="panel" id="historyPanel" hidden>
+      <h2>Recent jobs</h2>
+      <div id="historyList" class="history"></div>
+    </section>
+  </main>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-backdrop" id="settingsModal" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <h2>Settings</h2>
+        <button class="btn ghost" id="closeSettings">✕</button>
+      </div>
+      <label class="field">
+        <span>Groq API key <em>(free — console.groq.com/keys)</em></span>
+        <input type="password" id="apiKey" placeholder="gsk_..." autocomplete="off" />
+      </label>
+      <p class="muted" id="keyStatus"></p>
+      <div class="grid2">
+        <label class="field">
+          <span>Transcription model</span>
+          <select id="whisperModel">
+            <option value="whisper-large-v3-turbo">whisper-large-v3-turbo</option>
+            <option value="whisper-large-v3">whisper-large-v3</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Highlight model</span>
+          <select id="llmModel">
+            <option value="openai/gpt-oss-120b">gpt-oss-120b (default)</option>
+            <option value="qwen/qwen3.8-27b">qwen3.8-27b</option>
+            <option value="openai/gpt-oss-20b">gpt-oss-20b</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Download quality</span>
+          <select id="maxHeight">
+            <option value="720">720p (faster)</option>
+            <option value="1080">1080p (sharper)</option>
+          </select>
+        </label>
+      </div>
+      <button class="btn primary full" id="saveSettings">Save settings</button>
+      <p class="muted small">Your key is stored locally in <code>clipforge/data/settings.json</code> and never leaves your machine except to call Groq.</p>
+    </div>
+  </div>
+
+  <footer class="footer">ClipForge · runs 100% locally · powered by free Groq AI models</footer>
+
+  <script src="/app.js?v=4"></script>
+</body>
+</html>
